@@ -23,13 +23,14 @@
 #OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 CC = cc
+STD = -std=c99
 OPT = -O2
 OUT = -o sort-cmp
 
 SRC = sort_cmp.c
 
 all: $(SRC)
-	$(CC) $(OPT) $(OUT) $(SRC)
+	$(CC) $(STD) $(OPT) $(OUT) $(SRC)
 
 clean:
 	rm -f $(OUT)

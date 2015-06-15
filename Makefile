@@ -23,8 +23,8 @@
 #OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 CC = cc
-OPT = -02
-OUT = sort-cmp
+OPT = -O2
+OUT = -o sort-cmp
 
 SRC = sort_cmp.c
 

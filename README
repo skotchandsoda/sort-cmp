@@ -1,14 +1,17 @@
 NAME
+
     sort-cmp -- compare the running times of the libc sort routines on your
                 POSIX system
 
 SYNOPSIS
+
     sort-cmp iterations num-items
 
     iterations -- number of iterations to run before printing the statistics
     num-items  -- number of elements to sort in each iteration
 
 DESCRIPTION
+
     sort-cmp runs heapsort(3), mergesort(3), and qsort(3) over uniformly
     distributed random 32 bit integers.  It does this `iterations' times
     over `num-items' such integers.
@@ -20,6 +23,7 @@ DESCRIPTION
     and sort procedure to give you an idea of its progress.
 
 MOTIVATION
+
     sort-cmp demonstrates the relative the average-case performance for the
     bundled libc sorts on your system.  If you can simulate an average load,
     you could in principle make a more informed decision about which
@@ -39,6 +43,7 @@ MOTIVATION
     it's making.
 
 COMPATIBILITY
+
     sort-cmp uses the fixed-width C99 stdint types (int32_t, uint32_t, etc.),
     so you'll need a compiler supporting C99.  Any recent gcc, clang, or icc
     will do the trick.
@@ -48,9 +53,11 @@ COMPATIBILITY
     good shape.
 
 BUILDING
+
     Just run `make'.  To delete the binary, run `make clean'.
 
 OTHER CONSIDERATIONS
+
     sort-cmp does the entire sort in memory, so if you pick an unsuitable
     (read: gigantic) argument for num-items given your available physical
     memory you'll get to watch the process fault endlessly and accomplish
@@ -65,6 +72,7 @@ OTHER CONSIDERATIONS
     If it isn't, sort-cmp is going to do a lot of swapping.
 
 EXAMPLE
+
     $ ./sort-cmp
     usage: sort_cmp iterations num-items
     $ ./sort-cmp 10 10

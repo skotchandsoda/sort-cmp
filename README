@@ -44,6 +44,10 @@ MOTIVATION
 
 COMPATIBILITY
 
+    sort-cmp uses arc4random(3) to generate uniformly random 32 bit values.
+    So, if you're running just about any *BSD or OS X, you're set.  Support
+    for random(3) via feature test macros is coming.
+
     sort-cmp uses the fixed-width C99 stdint types (int32_t, uint32_t, etc.),
     so you'll need a compiler supporting C99.  Any recent gcc, clang, or icc
     will do the trick.

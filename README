@@ -1,2 +1,84 @@
-sort-cmp -- compare the running times of the libc sort routines on your POSIX system
+NAME
+    sort-cmp -- compare the running times of the libc sort routines on your
+                POSIX system
 
+SYNOPSIS
+    sort-cmp iterations num-items
+
+    iterations -- number of iterations to run before printing the statistics
+    num-items  -- number of elements to sort in each iteration
+
+DESCRIPTION
+    sort-cmp runs heapsort(3), mergesort(3), and qsort(3) over uniformly
+    distributed random 32 bit integers.  It does this `iterations' times
+    over `num-items' such integers.
+
+    When it's done, it prints out the mean running time in milliseconds and
+    the standard deviation of that time for each sort.
+
+    During execution, it prints a status indicating the current iteration
+    and sort procedure to give you an idea of its progress.
+
+MOTIVATION
+    sort-cmp demonstrates the relative the average-case performance for the
+    bundled libc sorts on your system.  If you can simulate an average load,
+    you could in principle make a more informed decision about which
+    sorting procedure to use (if any of them) in your application.
+
+    If you're taking an algorithms class, you can witness the theory
+    taught in lecture in practice.  For fun, compile it with debugging
+    symbols and run it through callgrind to see how many instructions
+    a given sort is using in a run of the program.  You could even
+    add your own implementation and see if it outperforms the general
+    libc implementation.
+
+    If you're taking an operating systems class, just give sort-cmp an
+    absurdly large argument for num-items and you'll soon understand
+    what ``thrashing'' is.  Try recompiling with debugging symbols and
+    (again) running it through callgrind to see what system calls
+    it's making.
+
+COMPATIBILITY
+    sort-cmp uses the fixed-width C99 stdint types (int32_t, uint32_t, etc.),
+    so you'll need a compiler supporting C99.  Any recent gcc, clang, or icc
+    will do the trick.
+
+    heapsort(3), mergesort(3), and qsort(3) were all standardized in C90,
+    so if you have a compiler supporting enough of C99 you should be in
+    good shape.
+
+BUILDING
+    Just run `make'.  To delete the binary, run `make clean'.
+
+OTHER CONSIDERATIONS
+    sort-cmp does the entire sort in memory, so if you pick an unsuitable
+    (read: gigantic) argument for num-items given your available physical
+    memory you'll get to watch the process fault endlessly and accomplish
+     nothing.
+
+    On my test system (Darwin 13.4, 8GB RAM), the effects of this are
+    particularly nasty above ~100 million elements.
+
+    An easy check you can make before trying something is whether
+    (num-items * 4 * 2) is roughly less than the number of bytes you
+    have available on your system at its current load.  If it is, great!
+    If it isn't, sort-cmp is going to do a lot of swapping.
+
+EXAMPLE
+    $ ./sort-cmp
+    usage: sort_cmp iterations num-items
+    $ ./sort-cmp 10 10
+            SORT       MEAN (ms)      STDEV (ms)
+     heapsort(3)      0.000000ms      0.000000ms
+    mergesort(3)      0.000000ms      0.000000ms
+        qsort(3)      0.000000ms      0.000000ms
+    $ ./sort-cmp 10 100000
+            SORT       MEAN (ms)      STDEV (ms)
+     heapsort(3)     19.900000ms      0.300000ms
+    mergesort(3)     13.500000ms      0.500000ms
+        qsort(3)     14.700000ms      0.458258ms
+    $ ./sort-cmp 1000 10000000 # this one will take some time
+            SORT       MEAN (ms)      STDEV (ms)
+     heapsort(3)    262.911000ms      5.551133ms
+    mergesort(3)    178.696000ms      4.007192ms
+        qsort(3)    186.784000ms      4.193011ms
